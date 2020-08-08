@@ -59,7 +59,7 @@ public class PrincipalFrame extends javax.swing.JFrame {
         doAnalysisMenuBar = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Notacion Infija a Postfija");
+        setTitle("Notacion Infija a Prefija");
         setMinimumSize(new java.awt.Dimension(600, 400));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
