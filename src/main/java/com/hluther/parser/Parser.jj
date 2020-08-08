@@ -22,20 +22,23 @@ PARSER_END(Parser)
 SKIP  : {" " | "\n" | "\r" | "\r\n"}    
 TOKEN : { <SUMA : "+"> {System.out.println("SUMA -> " + image);}}
 TOKEN : { <RESTA : "-"> {System.out.println("RESTA -> " + image);}}
-TOKEN : { <MULTIPLICACION : "*"> {System.out.println("MULTIPLICACION -> " + image);}}
-TOKEN : { <DIVISION : "/"> {System.out.println("DIVISION -> " + image);}}
 TOKEN : {<NUMERO : (["0"-"9"])+> {System.out.println("NUMERO -> " + image);}}
 
-public void start(): { String postfixNotation; } {
-    postfixNotation = exp() { principalFrame.printProcess("La notacion postfija es: " + postfixNotation); }
+void start(): { String prefixNotation; } { 
+    prefixNotation = exp("","")  <EOF> { principalFrame.printProcess("La notacion prefija es: " + prefixNotation); }
 }
 
-public String exp(): { Token token; String postfixNotation; } {
-    token = <NUMERO> postfixNotation = expP(String.valueOf(token.image)) { return postfixNotation; } 
+String Num(): {Token token;} {
+    token = <NUMERO> { return token.image; }
 }
 
-public String expP(String num): { String postfixNotation; } {
-    <SUMA> postfixNotation = exp() expP("") { return num + postfixNotation + "+"; }
-    | <RESTA> postfixNotation = exp() expP("") { return num + postfixNotation + "-"; }
-    | <EOF> { return num; }
+String exp(String text, String op): { String prefixNotation; } {
+    <SUMA> prefixNotation = expP(text, "+") { return prefixNotation; }
+    | <RESTA> prefixNotation = expP(text, "-") { return prefixNotation; }
+    | prefixNotation = Num() prefixNotation = expP(op + text + prefixNotation, "") { return prefixNotation; }
+}
+
+String expP(String text, String op): { String prefixNotation; } {
+	prefixNotation = exp(text, op) { return prefixNotation; }
+        | { return text; }
 }

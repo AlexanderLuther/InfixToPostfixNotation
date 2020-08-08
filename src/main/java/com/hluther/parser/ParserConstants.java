@@ -15,11 +15,7 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int RESTA = 6;
   /** RegularExpression Id. */
-  int MULTIPLICACION = 7;
-  /** RegularExpression Id. */
-  int DIVISION = 8;
-  /** RegularExpression Id. */
-  int NUMERO = 9;
+  int NUMERO = 7;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -33,8 +29,6 @@ public interface ParserConstants {
     "\"\\r\\n\"",
     "\"+\"",
     "\"-\"",
-    "\"*\"",
-    "\"/\"",
     "<NUMERO>",
   };
 

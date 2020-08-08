@@ -11,43 +11,58 @@
             this.principalFrame = principalFrame;
         }
 
-  final public void start() throws ParseException {String postfixNotation;
-    postfixNotation = exp();
-principalFrame.printProcess("El resultado es: " + postfixNotation);
+  final public void start() throws ParseException {String prefixNotation;
+    prefixNotation = exp("","");
+    jj_consume_token(0);
+principalFrame.printProcess("La notacion prefija es: " + prefixNotation);
 }
 
-  final public String exp() throws ParseException {Token token; String postfixNotation;
+  final public String Num() throws ParseException {Token token;
     token = jj_consume_token(NUMERO);
-    postfixNotation = expP(String.valueOf(token.image));
-{if ("" != null) return postfixNotation;}
+{if ("" != null) return token.image;}
     throw new Error("Missing return statement in function");
 }
 
-  final public String expP(String num) throws ParseException {String postfixNotation;
+  final public String exp(String text, String op) throws ParseException {String prefixNotation;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case SUMA:{
       jj_consume_token(SUMA);
-      postfixNotation = exp();
-      expP("");
-{if ("" != null) return num + postfixNotation + "+";}
+      prefixNotation = expP(text, "+");
+{if ("" != null) return prefixNotation;}
       break;
       }
     case RESTA:{
       jj_consume_token(RESTA);
-      postfixNotation = exp();
-      expP("");
-{if ("" != null) return num + postfixNotation + "-";}
+      prefixNotation = expP(text, "-");
+{if ("" != null) return prefixNotation;}
       break;
       }
-    case 0:{
-      jj_consume_token(0);
-{if ("" != null) return num;}
+    case NUMERO:{
+      prefixNotation = Num();
+      prefixNotation = expP(op + text + prefixNotation, "");
+{if ("" != null) return prefixNotation;}
       break;
       }
     default:
       jj_la1[0] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
+    }
+    throw new Error("Missing return statement in function");
+}
+
+  final public String expP(String text, String op) throws ParseException {String prefixNotation;
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case SUMA:
+    case RESTA:
+    case NUMERO:{
+      prefixNotation = exp(text, op);
+{if ("" != null) return prefixNotation;}
+      break;
+      }
+    default:
+      jj_la1[1] = jj_gen;
+{if ("" != null) return text;}
     }
     throw new Error("Missing return statement in function");
 }
@@ -61,13 +76,13 @@ principalFrame.printProcess("El resultado es: " + postfixNotation);
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[1];
+  final private int[] jj_la1 = new int[2];
   static private int[] jj_la1_0;
   static {
 	   jj_la1_init_0();
 	}
 	private static void jj_la1_init_0() {
-	   jj_la1_0 = new int[] {0x61,};
+	   jj_la1_0 = new int[] {0xe0,0xe0,};
 	}
 
   /** Constructor with InputStream. */
@@ -81,7 +96,7 @@ principalFrame.printProcess("El resultado es: " + postfixNotation);
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 1; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 2; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -95,7 +110,7 @@ principalFrame.printProcess("El resultado es: " + postfixNotation);
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 1; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 2; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -105,7 +120,7 @@ principalFrame.printProcess("El resultado es: " + postfixNotation);
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 1; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 2; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -123,7 +138,7 @@ principalFrame.printProcess("El resultado es: " + postfixNotation);
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 1; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 2; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -132,7 +147,7 @@ principalFrame.printProcess("El resultado es: " + postfixNotation);
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 1; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 2; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -141,7 +156,7 @@ principalFrame.printProcess("El resultado es: " + postfixNotation);
 	 token = new Token();
 	 jj_ntk = -1;
 	 jj_gen = 0;
-	 for (int i = 0; i < 1; i++) jj_la1[i] = -1;
+	 for (int i = 0; i < 2; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -192,12 +207,12 @@ principalFrame.printProcess("El resultado es: " + postfixNotation);
   /** Generate ParseException. */
   public ParseException generateParseException() {
 	 jj_expentries.clear();
-	 boolean[] la1tokens = new boolean[10];
+	 boolean[] la1tokens = new boolean[8];
 	 if (jj_kind >= 0) {
 	   la1tokens[jj_kind] = true;
 	   jj_kind = -1;
 	 }
-	 for (int i = 0; i < 1; i++) {
+	 for (int i = 0; i < 2; i++) {
 	   if (jj_la1[i] == jj_gen) {
 		 for (int j = 0; j < 32; j++) {
 		   if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -206,7 +221,7 @@ principalFrame.printProcess("El resultado es: " + postfixNotation);
 		 }
 	   }
 	 }
-	 for (int i = 0; i < 10; i++) {
+	 for (int i = 0; i < 8; i++) {
 	   if (la1tokens[i]) {
 		 jj_expentry = new int[1];
 		 jj_expentry[0] = i;
