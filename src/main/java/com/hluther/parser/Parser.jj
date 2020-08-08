@@ -1,0 +1,41 @@
+options{
+    STATIC = false;
+}
+
+PARSER_BEGIN(Parser)
+    
+    package com.hluther.parser;
+    import com.hluther.gui.PrincipalFrame;
+    
+    public class Parser{
+        
+        PrincipalFrame principalFrame;
+
+        public void setPrincipalFrame(PrincipalFrame principalFrame){
+            this.principalFrame = principalFrame;
+        }
+        
+    }
+
+PARSER_END(Parser)
+
+SKIP  : {" " | "\n" | "\r" | "\r\n"}    
+TOKEN : { <SUMA : "+"> {System.out.println("SUMA -> " + image);}}
+TOKEN : { <RESTA : "-"> {System.out.println("RESTA -> " + image);}}
+TOKEN : { <MULTIPLICACION : "*"> {System.out.println("MULTIPLICACION -> " + image);}}
+TOKEN : { <DIVISION : "/"> {System.out.println("DIVISION -> " + image);}}
+TOKEN : {<NUMERO : (["0"-"9"])+> {System.out.println("NUMERO -> " + image);}}
+
+public void start(): { String postfixNotation; } {
+    postfixNotation = exp() { principalFrame.printProcess("La notacion postfija es: " + postfixNotation); }
+}
+
+public String exp(): { Token token; String postfixNotation; } {
+    token = <NUMERO> postfixNotation = expP(String.valueOf(token.image)) { return postfixNotation; } 
+}
+
+public String expP(String num): { String postfixNotation; } {
+    <SUMA> postfixNotation = exp() expP("") { return num + postfixNotation + "+"; }
+    | <RESTA> postfixNotation = exp() expP("") { return num + postfixNotation + "-"; }
+    | <EOF> { return num; }
+}
